@@ -1,0 +1,50 @@
+# Reference deployment only: not executed in the published CPU/mock validation.
+# Start backend-a for one GPU, both services for two independent GPU replicas.
+x-backend: &backend
+  image: vllm/vllm-openai:v0.10.2
+  shm_size: 2gb
+  volumes:
+    - huggingface-cache:/root/.cache/huggingface
+  command:
+    - --model
+    - ${MODEL_ID:-Qwen/Qwen2.5-0.5B-Instruct}
+    - --served-model-name
+    - recommender
+    - --api-key
+    - ${UPSTREAM_API_KEY:?Set UPSTREAM_API_KEY for the local upstream servers}
+    - --max-model-len
+    - '2048'
+    - --gpu-memory-utilization
+    - '0.80'
+    - --enable-prefix-caching
+    - --generation-config
+    - vllm
+  healthcheck:
+    test: ['CMD', 'python3', '-c', "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health')"]
+    interval: 10s
+    timeout: 5s
+    retries: 30
+    start_period: 60s
+services:
+  backend-a:
+    <<: *backend
+    ports: ['127.0.0.1:8001:8000']
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              device_ids: ['${GPU_A:-0}']
+              capabilities: [gpu]
+  backend-b:
+    <<: *backend
+    ports: ['127.0.0.1:8002:8000']
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              device_ids: ['${GPU_B:-1}']
+              capabilities: [gpu]
+volumes:
+  huggingface-cache:

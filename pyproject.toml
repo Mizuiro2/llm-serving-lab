@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools==80.9.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "llm-serving-lab"
+version = "0.1.0"
+description = "Bounded streaming gateway and reproducible client SLO benchmarks for LLM serving"
+requires-python = ">=3.11"
+dependencies = ["fastapi==0.115.14", "httpx==0.28.1", "uvicorn==0.34.3", "anyio==4.15.1"]
+license = "MIT"
+authors = [{name = "Qingquan Wang"}]
+
+[project.optional-dependencies]
+dev = ["pytest==8.4.1"]
+
+[project.scripts]
+serving-gateway = "serving_lab.gateway:main"
+serving-mock = "serving_lab.mock:main"
+serving-bench = "serving_lab.benchmark:main"
+serving-prompts = "serving_lab.dataset:main"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
