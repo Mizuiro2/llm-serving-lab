@@ -1,0 +1,25 @@
+# TYPE serving_gateway_requests_total counter
+serving_gateway_requests_total 264
+# TYPE serving_gateway_rejected_total counter
+serving_gateway_rejected_total 56
+# TYPE serving_gateway_upstream_errors_total counter
+serving_gateway_upstream_errors_total 0
+# TYPE serving_gateway_timeouts_total counter
+serving_gateway_timeouts_total 0
+# TYPE serving_gateway_cancelled_total counter
+serving_gateway_cancelled_total 0
+# TYPE serving_gateway_transport_completed_total counter
+serving_gateway_transport_completed_total 208
+# TYPE serving_gateway_active gauge
+serving_gateway_active 0
+# TYPE serving_gateway_queued gauge
+serving_gateway_queued 0
+# TYPE serving_gateway_request_duration_seconds summary
+serving_gateway_request_duration_seconds_sum 15.422960332
+serving_gateway_request_duration_seconds_count 208
+# TYPE serving_gateway_backend_inflight gauge
+# TYPE serving_gateway_backend_selected_total counter
+serving_gateway_backend_inflight{backend="0"} 0
+serving_gateway_backend_selected_total{backend="0"} 104
+serving_gateway_backend_inflight{backend="1"} 0
+serving_gateway_backend_selected_total{backend="1"} 104
